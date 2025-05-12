@@ -7,10 +7,12 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-// Swagger: http://localhost:8080/swagger-ui/index.html
+import java.util.Collections;
+
 @Configuration
 public class OpenApiConfiguration {
     @Bean
@@ -40,6 +42,8 @@ public class OpenApiConfiguration {
                                         .type(SecurityScheme.Type.HTTP)
                                         .scheme("bearer")
                                         .bearerFormat("JWT")));
+
+        openApi.servers(Collections.singletonList(new Server().url("/")));
         return openApi;
     }
 }
