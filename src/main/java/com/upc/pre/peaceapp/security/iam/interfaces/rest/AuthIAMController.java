@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 /**
  * AuthenticationController
  * <p>
- *     This controller is responsible for handling authentication requests.
- *     It exposes two endpoints:
+ * This controller is responsible for handling authentication requests.
+ * It exposes two endpoints:
  *     <ul>
  *         <li>POST /api/v1/authentication/sign-in</li>
  *         <li>POST /api/v1/authentication/sign-up</li>
@@ -34,6 +34,7 @@ public class AuthIAMController {
 
     /**
      * Handles the sign-in request.
+     *
      * @param signInResource the sign-in request body.
      * @return the authenticated user resource.
      */
@@ -47,14 +48,15 @@ public class AuthIAMController {
             }
             var authenticatedUserResource = AuthenticatedUserResourceFromEntityAssembler.toResourceFromEntity(authenticatedUser.get().getLeft(), authenticatedUser.get().getRight());
             return ResponseEntity.ok(authenticatedUserResource);
-        }catch(Exception e) {
+        } catch (Exception e) {
             var bodyJSON = "{\"message\": \"" + e.getMessage() + "\"}";
-            return ResponseEntity.ok().body(bodyJSON);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(bodyJSON);
         }
     }
 
     /**
      * Handles the sign-up request.
+     *
      * @param signUpResource the sign-up request body.
      * @return the created user resource.
      */
@@ -68,7 +70,7 @@ public class AuthIAMController {
             }
             var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(user.get());
             return new ResponseEntity<>(userResource, HttpStatus.CREATED);
-        }catch(Exception e) {
+        } catch (Exception e) {
             var bodyJSON = "{\"message\": \"" + e.getMessage() + "\"}";
             return ResponseEntity.ok().body(bodyJSON);
         }
@@ -84,7 +86,7 @@ public class AuthIAMController {
             }
             var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(user.get());
             return new ResponseEntity<>(userResource, HttpStatus.ACCEPTED);
-        }catch(Exception e) {
+        } catch (Exception e) {
             var bodyJSON = "{\"message\": \"" + e.getMessage() + "\"}";
             return ResponseEntity.ok().body(bodyJSON);
         }

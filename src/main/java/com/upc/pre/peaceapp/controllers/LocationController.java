@@ -3,7 +3,6 @@ package com.upc.pre.peaceapp.controllers;
 import com.upc.pre.peaceapp.schemas.LocationSchema;
 import com.upc.pre.peaceapp.services.LocationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.websocket.server.PathParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +37,7 @@ public class LocationController {
     }
     // GET /api/v1/locations/dangerous?limit=10
     @GetMapping("/dangerous")
-    public ResponseEntity<?> getDangerousLocations(@PathParam("quantity_reports") int quantityReports) {
+    public ResponseEntity<?> getDangerousLocations(@RequestParam("quantity_reports") int quantityReports) {
         try{
             return ResponseEntity.ok(service.obtainDangerousLocations(quantityReports));
         } catch (Exception e) {

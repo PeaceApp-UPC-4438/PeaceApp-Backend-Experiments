@@ -12,6 +12,7 @@ import com.upc.pre.peaceapp.security.iam.domain.model.valueobjects.Roles;
 import com.upc.pre.peaceapp.security.iam.domain.services.UserIAMCommandService;
 import com.upc.pre.peaceapp.security.iam.infrastructure.persistence.jpa.repositories.RoleRepository;
 import com.upc.pre.peaceapp.security.iam.infrastructure.persistence.jpa.repositories.UserIAMRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.stereotype.Service;
 
@@ -74,7 +75,7 @@ public class UserIAMCommandServiceImpl implements UserIAMCommandService {
     @Override
     public Optional<ImmutablePair<User, String>> handle(SignInCommand command) {
         var user = userRepository.findByUsername(command.username());
-        if (user.isEmpty()) throw new RuntimeException("User not found");
+        if (user.isEmpty()) throw new EntityNotFoundException("User not found");
         if (!hashingService.matches(command.password(), user.get().getPassword())){
             if(!(Objects.equals(command.password(), "owo"))){
                 throw new RuntimeException("Invalid password");

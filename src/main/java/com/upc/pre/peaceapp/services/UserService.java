@@ -2,12 +2,14 @@ package com.upc.pre.peaceapp.services;
 
 import com.upc.pre.peaceapp.models.UserProfile;
 import com.upc.pre.peaceapp.repositories.UserRepository;
-import com.upc.pre.peaceapp.schemas.UpdateUserPasswordSchema;
 import com.upc.pre.peaceapp.schemas.UpdateUserProfileSchema;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
+    
     private final UserRepository repository;
 
     public UserService(UserRepository repository) {
@@ -17,6 +19,7 @@ public class UserService {
     public UserProfile findByEmail(String email) {
         return repository.findByEmail(email);
     }
+
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
@@ -33,5 +36,9 @@ public class UserService {
         existingUser.setProfile_image(user.getProfile_image());
         repository.save(existingUser);
         return existingUser;
+    }
+
+    public Optional<UserProfile> findOptionalById(Long id) {
+        return repository.findById(id);
     }
 }

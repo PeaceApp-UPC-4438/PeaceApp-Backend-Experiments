@@ -36,4 +36,8 @@ public class ReportService {
         repository.deleteById(id);
     }
 
+    public Report save(Report report) {
+        return repository.save(report);
+    }
+
 }
