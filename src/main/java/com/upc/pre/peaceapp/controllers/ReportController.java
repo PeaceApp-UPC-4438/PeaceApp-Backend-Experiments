@@ -20,11 +20,11 @@ public class ReportController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> newReport (@RequestBody ReportSchema report) {
+    public ResponseEntity<?> newReport(@RequestBody ReportSchema report) {
         try {
             Report newReport = service.saveReport(report);
             return ResponseEntity.created(null).body(newReport);
-        }catch(Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
         }
@@ -34,7 +34,7 @@ public class ReportController {
     public ResponseEntity<?> getAllReports() {
         try {
             return ResponseEntity.ok(service.findAll());
-        }catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
         }
     }
@@ -43,13 +43,11 @@ public class ReportController {
     public ResponseEntity<?> getReportById(@PathVariable Long id) {
         try {
             Report report = service.findById(id);
-            if(report == null) {
+            if (report == null) {
                 return ResponseEntity.badRequest().body(Map.of("message", "Report not found"));
             }
             return ResponseEntity.ok(report);
-        }catch(IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -58,7 +56,7 @@ public class ReportController {
     public ResponseEntity<?> getReportsByUserId(@PathVariable Long userId) {
         try {
             return ResponseEntity.ok(service.findByUserId(userId));
-        }catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
         }
     }
@@ -68,7 +66,7 @@ public class ReportController {
         try {
             service.deleteById(id);
             return ResponseEntity.noContent().build();
-        }catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
         }
     }

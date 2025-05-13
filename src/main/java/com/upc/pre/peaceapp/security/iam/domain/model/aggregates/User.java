@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name = "iam_users")
 public class User extends AuditableAbstractAggregateRoot<User> {
     @Setter
     @NotBlank
@@ -30,7 +31,7 @@ public class User extends AuditableAbstractAggregateRoot<User> {
 
     @Setter
     @Getter
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER) // sin cascade
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;

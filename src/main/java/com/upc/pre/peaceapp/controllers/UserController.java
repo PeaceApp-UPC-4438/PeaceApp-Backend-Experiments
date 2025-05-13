@@ -30,9 +30,7 @@ public class UserController {
                 return ResponseEntity.badRequest().body("User not found");
             }
             return ResponseEntity.ok(user);
-        }catch(IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }catch(Exception e) {
+        } catch(Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -71,16 +69,6 @@ public class UserController {
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UpdateUserProfileSchema user) {
         try {
             UserProfile updatedUser = userService.update(id, user);
-            return ResponseEntity.ok(updatedUser);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @PutMapping("change-password/{id}")
-    public ResponseEntity<?> updateUserPassword(@PathVariable Long id, @RequestBody UpdateUserPasswordSchema user) {
-        try {
-            UserProfile updatedUser = userService.updatePassword(id, user);
             return ResponseEntity.ok(updatedUser);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

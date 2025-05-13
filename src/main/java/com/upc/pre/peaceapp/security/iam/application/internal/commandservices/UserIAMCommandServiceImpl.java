@@ -16,6 +16,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -39,21 +40,26 @@ public class UserIAMCommandServiceImpl implements UserIAMCommandService {
     public Optional<User> handle(SignUpCommand command) {
         if (userRepository.existsByUsername(command.username()))
             throw new RuntimeException("Username already exists");
+
+        List<Role> roles;
         var stringRoles = command.roles();
-        var roles = new ArrayList<Role>();
+
         if (stringRoles == null || stringRoles.isEmpty()) {
-            var storedRole = roleRepository.findByName(Roles.ROLE_USER);
-            storedRole.ifPresent(roles::add);
+            Role defaultRole = roleRepository.findByName(Roles.ROLE_USER)
+                    .orElseThrow(() -> new RuntimeException("ROLE_USER not found"));
+            roles = List.of(defaultRole);
         } else {
-            stringRoles.forEach(role -> {
-                var storedRole = roleRepository.findByName(Roles.valueOf(role));
-                storedRole.ifPresent(roles::add);
-            });
+            roles = stringRoles.stream()
+                    .map(r -> roleRepository.findByName(Roles.valueOf(r))
+                            .orElseThrow(() -> new RuntimeException("Role " + r + " not found")))
+                    .toList();
         }
+
         var user = new User(command.username(), hashingService.encode(command.password()), roles);
         userRepository.save(user);
         return userRepository.findByUsername(command.username());
     }
+
 
     @Override
     public Optional<User> handle(ChangePasswordCommand command) {

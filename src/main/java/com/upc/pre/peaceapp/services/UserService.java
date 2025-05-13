@@ -34,11 +34,4 @@ public class UserService {
         repository.save(existingUser);
         return existingUser;
     }
-
-    public UserProfile updatePassword(Long id, UpdateUserPasswordSchema user) {
-        UserProfile existingUser = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        existingUser.setPassword(user.getPassword());
-        repository.save(existingUser);
-        return existingUser;
-    }
 }
