@@ -2,6 +2,7 @@ package com.upc.pre.peaceapp.controllers;
 
 import com.upc.pre.peaceapp.models.Comment;
 import com.upc.pre.peaceapp.schemas.CommentSchema;
+import com.upc.pre.peaceapp.schemas.UpdateCommentSchema;
 import com.upc.pre.peaceapp.services.CommentService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -42,12 +43,10 @@ public class CommentController {
             return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
         }
     }
-
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateComment(@PathVariable Long id, @RequestBody Map<String, String> request) {
+    public ResponseEntity<?> updateComment(@PathVariable Long id, @RequestBody UpdateCommentSchema request) {
         try {
-            String content = request.get("content");
-            Comment updated = service.updateComment(id, content);
+            Comment updated = service.updateComment(id, request.getContent());
             return ResponseEntity.ok(updated);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
