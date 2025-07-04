@@ -27,6 +27,7 @@ public class UserService {
     public UserProfile save(UserProfile user) {
         return repository.save(user);
     }
+    public UserProfile findById(Long id) {return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));}
 
     public UserProfile update(Long id, UpdateUserProfileSchema user) {
         UserProfile existingUser = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
