@@ -31,7 +31,7 @@ public class User extends AuditableAbstractAggregateRoot<User> {
 
     @Setter
     @Getter
-    @ManyToMany(fetch = FetchType.EAGER) // sin cascade
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
